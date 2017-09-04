@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Network | Images</title>
+
+  <style type="text/css">
+    html, body 
+    {
+      font: 10pt arial;
+      padding: 0;
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+    #mynetwork 
+    {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+  <script type="text/javascript" src="./resources/vis.js"></script>
+  <link href="./resources/vis-network.min.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript">
+    var nodes = null;
+    var edges = null;
+    var network = null;
+    var LENGTH_MAIN = 1000,
+        LENGTH_SUB = 50,
+        WIDTH_SCALE = 0.05,
+        GREEN = 'green',
+        RED = '#C5000B',
+        ORANGE = 'orange',
+    //GRAY = '#666666',
+        GRAY = 'grey',
+        BLACK = '#2B1B17';
+    // Called when the Visualization API is loaded.
+    function draw() {
+      // Create a data table with nodes.
+      nodes = [];
+      // Create a data table with links.
+      edges = [];
+      nodes.push({id: 1, label: 'attack-pattern', group: 'attackpattern', value: 8});
+      nodes.push({id: 2, label: 'campaign', group: 'campaign', value: 8});
+      nodes.push({id: 3, label: 'course-of-action', group: 'courseofaction', value: 8});
+      nodes.push({id: 4, label: 'indicator', group: 'indicator', value: 8});
+      nodes.push({id: 5, label: 'intrusion-set', group: 'intrusionset', value: 8});
+      nodes.push({id: 6, label: 'malware', group: 'malware', value: 8});
+      nodes.push({id: 7, label: 'threat-actor', group: 'threatactor', value: 8});
+      nodes.push({id: 8, label: 'tool', group: 'tool', value: 8});
+      nodes.push({id: 9, label: 'vulnerability', group: 'vulnerability', value: 8});
+      nodes.push({id: 10, label: 'identity', group: 'identity', value: 8});
+
+      edges.push({from:1,to:9,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:1,to:10,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:1,to:6,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:1,to:8,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:2,to:5,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'attributed-to'});
+      edges.push({from:2,to:7,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'attributed-to'});
+      edges.push({from:2,to:10,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:2,to:9,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:2,to:1,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:2,to:6,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:2,to:8,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:3,to:1,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'mitigates'});
+      edges.push({from:3,to:6,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'mitigates'});
+      edges.push({from:3,to:8,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'mitigates'});
+      edges.push({from:3,to:9,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'mitigates'});
+      edges.push({from:4,to:1,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'indicates'});
+      edges.push({from:4,to:2,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'indicates'});
+      edges.push({from:4,to:5,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'indicates'});
+      edges.push({from:4,to:6,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'indicates'});
+      edges.push({from:4,to:7,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'indicates'});
+      edges.push({from:4,to:8,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'indicates'});
+      edges.push({from:5,to:7,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'attributed-to'});
+      edges.push({from:5,to:10,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:5,to:9,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:5,to:1,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:5,to:6,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:5,to:8,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:6,to:10,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:6,to:9,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:6,to:8,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:6,to:6,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'variant-of'});
+      edges.push({from:7,to:10,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'attributed-to'});
+      edges.push({from:7,to:10,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'impersonates'});
+      edges.push({from:7,to:10,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:7,to:9,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:7,to:1,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:7,to:6,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:7,to:8,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'uses'});
+      edges.push({from:8,to:10,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+      edges.push({from:8,to:9,arrows: 'to',length: LENGTH_MAIN, width: WIDTH_SCALE * 6, label: 'targets'});
+
+       // legend
+      var mynetwork = document.getElementById('mynetwork');
+      var x = - mynetwork.clientWidth / 2 + 50;
+      var y = - mynetwork.clientHeight / 2 + 50;
+      var step = 70;
+
+      // create a network
+      var container = document.getElementById('mynetwork');
+      var data = {
+        nodes: nodes,
+        edges: edges
+      };
+      var options = 
+      {
+        edges: {"arrows": {"to": {"enabled": true} } },
+        nodes: 
+        {
+          scaling: 
+          {
+            min: 8,
+            max: 32
+          }
+        },
+        edges: 
+        {
+          color: {
+            "color": "rgba(18,42,132,0.98)",
+            "hover": "rgba(12,120,132,1)",
+            "inherit": true
+          },
+          smooth: false
+        },       
+        physics: {
+          "forceAtlas2Based": {
+            "springLength": 100
+          },
+          "minVelocity": 0.75,
+          "solver": "forceAtlas2Based"
+        },
+        groups: 
+        {
+          'switch': 
+          {
+            shape: 'triangle',
+            color: '#FF9900'
+          },
+          attackpattern: 
+          {
+            shape: 'dot',
+            color: "#e60000"
+          },
+          campaign: 
+          {
+            shape: 'dot',
+            color: "#000000" 
+          },
+          courseofaction: 
+          {
+            shape: 'dot',
+            color: "#339933" 
+          },
+          indicator: 
+          {
+            shape: 'dot',
+            color: "#663300" 
+          },
+          intrusionset: 
+          {
+            shape: 'dot',
+            color: "#5A1E5C" 
+          },
+          malware: 
+          {
+            shape: 'dot',
+            color: "#cc2900" 
+          },
+          threatactor: 
+          {
+            shape: 'dot',
+            color: "#cc6600" 
+          },
+          tool: 
+          {
+            shape: 'dot',
+            color: "#ffff00" 
+          },
+          vulnerability: 
+          {
+            shape: 'dot',
+            color: "#ff9900" 
+          },
+          identity: 
+          {
+            shape: 'dot',
+            color: "#ffffff" 
+          }
+        }
+      };
+      network = new vis.Network(container, data, options);
+    }
+  </script>  
+</head>
+<body onload="draw()">
+<div id="mynetwork">
+<div class="vis-network" tabindex="900" style="position: relative; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;">
+<canvas style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;" width="3360" height="1818"></canvas></div>
+</div>
+</body>
+</html>
