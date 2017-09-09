@@ -92,8 +92,8 @@
 
        // legend
       var mynetwork = document.getElementById('mynetwork');
-      var x = - mynetwork.clientWidth / 2 + 50;
-      var y = - mynetwork.clientHeight / 2 + 50;
+      var x = - mynetwork.clientWidth / 3 + 50;
+      var y = - mynetwork.clientHeight / 3 + 50;
       var step = 70;
 
       // create a network
@@ -109,7 +109,7 @@
         {
           scaling: 
           {
-            min: 8,
+            min: 24,
             max: 32
           }
         },
@@ -120,12 +120,24 @@
             "hover": "rgba(12,120,132,1)",
             "inherit": true
           },
-          smooth: false
-        },       
+          smooth: {
+			      "type": "discrete",
+			      "forceDirection": "none"
+			    },
+        },
+   
+        "interaction": {
+        	"hover": true,
+		    "multiselect": true,
+		    "navigationButtons": true
+		  },  
         physics: {
-          "forceAtlas2Based": {
-            "springLength": 100
-          },
+          "barnesHut": {
+		      "gravitationalConstant": -29000,
+		      "centralGravity": 0,
+		      "springLength": 300,
+		      "avoidOverlap": 1
+		    },
           "minVelocity": 0.75,
           "solver": "forceAtlas2Based"
         },
@@ -193,9 +205,12 @@
   </script>  
 </head>
 <body onload="draw()">
+<h3><p>This Graph is represting relationship beetween STIX 2.0 Objects. Reference : OASIS</p></h3>
+<h3></h3>
 <div id="mynetwork">
-<div class="vis-network" tabindex="900" style="position: relative; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;">
-<canvas style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;" width="3360" height="1818"></canvas></div>
+	<div class="vis-network" tabindex="900" style="position: relative; overflow: hidden; touch-action: pan-y; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;">
+		<canvas style="position: relative; touch-action: none; user-select: none; -webkit-user-drag: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); width: 100%; height: 100%;" width="3360" height="1818"></canvas>
+	</div>
 </div>
 </body>
 </html>
